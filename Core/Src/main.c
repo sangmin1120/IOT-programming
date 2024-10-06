@@ -31,7 +31,15 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define VERSION 1 // practice # 1 : practice1 , 2 : paractice2(polling) , 3 : paractice2(interrupt)
 
+#define RUN 0
+#define STOP 1
+
+uint8_t state = STOP;
+
+uint8_t preSW = STOP;
+uint8_t curSW = STOP;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -100,6 +108,52 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+#if VERSION==1
+	  if (!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)){
+		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+		  HAL_Delay(500);
+		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+		  HAL_Delay(500);
+	  }
+	  else{
+		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+	  }
+#elif VERSION==2
+	  curSW = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
+
+	  if (preSW==STOP && curSW==RUN){
+
+		  switch (state) {
+			case STOP:
+				state=RUN;
+				break;
+			case RUN:
+				state=STOP;
+				break;
+		}
+	  }
+	preSW=curSW;
+
+	switch (state) {
+		case STOP:
+			HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_RESET);
+			break;
+		case RUN:
+			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+			HAL_Delay(500);
+			break;
+	}
+#elif VERSION==3
+	  switch (state) {
+		case STOP:
+			HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_RESET);
+			break;
+		case RUN:
+			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+			HAL_Delay(500);
+			break;
+	}
+#endif
   }
   /* USER CODE END 3 */
 }
@@ -217,12 +271,29 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
-
+#if VERSION==3
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if (GPIO_Pin==B1_Pin){
+		switch (state) {
+			case STOP:
+				state=RUN;
+				break;
+			case RUN:
+				state=STOP;
+				break;
+		}
+	}
+}
+#endif
 /* USER CODE END 4 */
 
 /**

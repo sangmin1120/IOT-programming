@@ -31,7 +31,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define VERSION 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,7 +57,7 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 int __io_putchar(int ch){
-	HAL_UART_Transmit(&huart2, (uint8_t)&ch,1,HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, (uint8_t *)&ch,1,HAL_MAX_DELAY);
 	return ch;
 }
 /* USER CODE END 0 */
@@ -103,6 +103,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+#if VERSION==1
+	  printf("Prox : %d\n",HAL_GPIO_ReadPin(Prox_GPIO_Port,Prox_Pin));
+	  HAL_Delay(1000);
+#endif
   }
   /* USER CODE END 3 */
 }
@@ -219,6 +223,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Prox_Pin */
+  GPIO_InitStruct.Pin = Prox_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Prox_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

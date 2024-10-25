@@ -3,14 +3,19 @@
 
 - 실습 환경 : STM32 IDLE
 - Nucleo-F446RE , Rora board
+- 센서 : 근접 센서 , 진동 센서 , DHT11(온습도 센서)
   
-- branch에 week 과정 작성 , VERSION을 define해서 # 실습 번호로 설정 
+- branch에 week 과정 작성 , VERSION을 define해서 # 실습 번호로 설정
+- VERSION 1 : 근접 센서
+- VRESION 2 : 진동 센서
+- VERSION 3 : 온습도 센서
 
-## week1 : 실습 환경 구축
+## week5 : 센서 정보 읽어오기
+--------------------------------
 
-## week2 : HAL_GPIO_WritePin 으로 LD2 제어
+1. UART 설정 : printf를 이용해 터미널로 출력한다.
 
-## week3 : HAL_GPIO_ReadPin 으로 B1 버튼 스위치 제어 , 인터럽트로 스위치 입력
+- VERSION==1
+  근접 센서 => PB13 번 핀을 사용해 입력 받아 출력한다. 근접하면 1 , 아무것도 없으면 0
 
-## week4 : 타이머 사용 및 내부 인터럽트
-
+- VERSION==2

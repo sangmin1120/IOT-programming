@@ -67,6 +67,8 @@ void Error_Handler(void);
 #define LD2_GPIO_Port GPIOA
 #define Prox_Pin GPIO_PIN_13
 #define Prox_GPIO_Port GPIOB
+#define Vib_Pin GPIO_PIN_14
+#define Vib_GPIO_Port GPIOB
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

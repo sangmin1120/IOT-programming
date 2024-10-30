@@ -31,7 +31,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define VERSION 1
+#define VERSION 2
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -105,6 +105,10 @@ int main(void)
     /* USER CODE BEGIN 3 */
 #if VERSION==1
 	  printf("Prox : %d\n",HAL_GPIO_ReadPin(Prox_GPIO_Port,Prox_Pin));
+	  HAL_Delay(1000);
+#endif
+#if VERSION==2
+	  printf("Vib : %d\n",HAL_GPIO_ReadPin(Vib_GPIO_Port,Vib_Pin));
 	  HAL_Delay(1000);
 #endif
   }
@@ -229,6 +233,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(Prox_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Vib_Pin */
+  GPIO_InitStruct.Pin = Vib_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(Vib_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
